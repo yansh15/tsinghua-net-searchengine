@@ -1,27 +1,20 @@
 package xin.yansh.course.searchengine;
 
-import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
-import static xin.yansh.course.searchengine.Config.FilePipelineConfig;
 import static xin.yansh.course.searchengine.Config.PublicConfig;
 
 public class MyFilePipeline implements Pipeline {
-    private final MongoClient client;
-    private final MongoDatabase database;
     private final MongoCollection<Document> collection;
 
-    public MyFilePipeline() {
+    public MyFilePipeline(MongoCollection<Document> c) {
         super();
-        client = new MongoClient();
-        database = client.getDatabase(FilePipelineConfig.DATABASE_NAME);
-        collection = database.getCollection(FilePipelineConfig.COLLECTION_NAME);
+        collection = c;
     }
 
     @Override
