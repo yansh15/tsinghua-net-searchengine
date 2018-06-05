@@ -8,7 +8,7 @@ import org.bson.Document;
 import static xin.yansh.course.searchengine.Config.MongoDBConfig;
 import static xin.yansh.course.searchengine.Config.PublicConfig;
 
-public class App {
+public class CreateIndex {
     public static void main(String[] args) throws Exception {
         MongoClient client = new MongoClient();
         MongoDatabase database = client.getDatabase(MongoDBConfig.DATABASE_NAME);
