@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="tsinghua-net-lucene" />
         <module name="tsinghua-net-spider" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="tsinghua-net-lucene" target="1.8" />
       <module name="tsinghua-net-searchengine" target="1.8" />
       <module name="tsinghua-net-spider" target="1.8" />
     </bytecodeTargetLevel>

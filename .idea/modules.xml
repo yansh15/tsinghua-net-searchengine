@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/tsinghua-net-lucene/tsinghua-net-lucene.iml" filepath="$PROJECT_DIR$/tsinghua-net-lucene/tsinghua-net-lucene.iml" />
       <module fileurl="file://$PROJECT_DIR$/tsinghua-net-searchengine.iml" filepath="$PROJECT_DIR$/tsinghua-net-searchengine.iml" />
       <module fileurl="file://$PROJECT_DIR$/tsinghua-net-spider/tsinghua-net-spider.iml" filepath="$PROJECT_DIR$/tsinghua-net-spider/tsinghua-net-spider.iml" />
     </modules>

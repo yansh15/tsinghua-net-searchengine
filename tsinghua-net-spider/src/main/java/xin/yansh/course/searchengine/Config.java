@@ -18,7 +18,6 @@ class Config {
         static final String KEY_BYTES = "bytes";
         static final String KEY_CHARSET = "charset";
         static final String KEY_HTML = "html";
-
         static final String KEY_URL = "url";
 
         static final String DATABASE_NAME = "tsinghua_net";
