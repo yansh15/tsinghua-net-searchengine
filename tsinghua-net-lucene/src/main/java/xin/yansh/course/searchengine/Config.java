@@ -45,6 +45,14 @@ class Config {
         static final String COLLECTION_NAME = "page";
         static final String SMALL_COLLECTION_NAME = "small_page";
     }
+    
+    static class SearchFieldWeightConfig {
+    	static final float TITLE_WEIGHT = 100f;
+    	static final float CONTENT_WEIGHT = 1f;
+    	static final float H_WEIGHT = 0.1f;
+    	static final float URL_WEIGHT = 10f;
+    	static final float KEYWORD_WEIGHT = 10f;
+    }
 
     static String getIndexDirectory() {
         return PublicConfig.IS_SMALL ? LuceneConfig.SMALL_INDEX_DIRECTORY : LuceneConfig.INDEX_DIRECTORY;
