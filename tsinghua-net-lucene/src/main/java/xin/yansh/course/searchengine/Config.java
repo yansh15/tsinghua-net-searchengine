@@ -40,6 +40,8 @@ class Config {
         static final String KEY_CHARSET = "charset";
         static final String KEY_HTML = "html";
         static final String KEY_URL = "url";
+        static final String KEY_LINKS = "links";
+        static final String KEY_PAGERANK = "pagerank";
 
         static final String DATABASE_NAME = "tsinghua_net";
         static final String COLLECTION_NAME = "page";

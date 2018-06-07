@@ -29,7 +29,7 @@ public class MyPageProcessor implements PageProcessor {
 
     public MyPageProcessor(Set<String> domains) {
         super();
-        this.site = Site.me().setRetryTimes(3).setTimeOut(6000).setSleepTime(10);
+        this.site = Site.me().setRetryTimes(3).setTimeOut(20000).setSleepTime(10);
         this.domains = domains;
         this.pageCntMutex = new Object();
         this.pageCnt = 0;
@@ -59,6 +59,12 @@ public class MyPageProcessor implements PageProcessor {
             System.out.println(pageCnt + "\t\t" + url);
             ++pageCnt;
         }
+        Matcher urlMatcher = PageProcessorConfig.PATTERN.matcher(url);
+        if (!urlMatcher.matches()) {
+            page.setSkip(true);
+            return;
+        }
+        page.putField(PublicConfig.KEY_URL, urlMatcher.group(1));
         switch (contentType) {
             case HTML: {
                 page.putField(PublicConfig.KEY_CONTENT_TYPE, PublicConfig.HTML_CONTENT_TYPE);
@@ -77,6 +83,7 @@ public class MyPageProcessor implements PageProcessor {
                             targets.add(matcher.group(1));
                     }
                 }
+                page.putField(PublicConfig.KEY_LINKS, targets);
                 page.addTargetRequests(targets);
                 break;
             }
