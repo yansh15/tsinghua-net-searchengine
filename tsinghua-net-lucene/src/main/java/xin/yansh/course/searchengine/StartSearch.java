@@ -53,7 +53,7 @@ public class StartSearch {
 			for (int i = 0; i < docs.length; ++i) {
 				ScoreDoc doc = docs[i];
 				Document document = searcher.doc(doc.doc);
-				System.out.println(doc + "[" + document.get("h") + "]");
+				System.out.println(doc + "[" + document.get("url") + "]");
 			}
 		}
 		return topDocs;

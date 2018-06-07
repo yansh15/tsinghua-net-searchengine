@@ -85,100 +85,115 @@ public class PageIndexer {
         }
     }
 
-    private void indexHtml(String contentType, String url, String charset, String html) throws Exception {
-        List<Field> fieldList = new ArrayList<>();
-
-        Field contentTypeField = new StoredField(LuceneConfig.FIELD_CONTENT_TYPE, contentType);
-        fieldList.add(contentTypeField);
-
-        Field urlField = new StringField(LuceneConfig.FIELD_URL, url, Field.Store.YES);
-        fieldList.add(urlField);
-
-        Field charsetField = new StoredField(LuceneConfig.FIELD_CHARSET, charset);
-        fieldList.add(charsetField);
-
-        org.jsoup.nodes.Document document = Jsoup.parse(html);
-
-        Element titleElement = document.select("title").first();
-        String title = titleElement != null ? titleElement.text() : "";
-        Field titleField = new TextField(LuceneConfig.FIELD_TITLE, title, Field.Store.YES);
-        fieldList.add(titleField);
-
-        Element keywordElement = document.select("meta[name=keywords]").first();
-        String keyword = keywordElement != null ? keywordElement.attr("content").trim() : "";
-        Field keywordField = new TextField(LuceneConfig.FIELD_KEYWORD, keyword, Field.Store.YES);
-        fieldList.add(keywordField);
-
-        Elements mainElements = document.select("article");
-        if (mainElements.size() == 0)
-            mainElements.add(document.body());
-
-        String h = DocumentHelper.getTextFromTags(mainElements, LuceneConfig.H_TAG_LIST);
-        Field hField = new TextField(LuceneConfig.FIELD_H, h, Field.Store.YES);
-        fieldList.add(hField);
-
-        String content = DocumentHelper.getText(mainElements);
-        Field contentField = new TextField(LuceneConfig.FIELD_CONTENT, content, Field.Store.YES);
-        fieldList.add(contentField);
-
-        indexWriter.addDocument(fieldList);
+    private void indexHtml(String contentType, String url, String charset, String html) {
+    	try {
+	        List<Field> fieldList = new ArrayList<>();
+	
+	        Field contentTypeField = new StoredField(LuceneConfig.FIELD_CONTENT_TYPE, contentType);
+	        fieldList.add(contentTypeField);
+	
+	        Field urlField = new StringField(LuceneConfig.FIELD_URL, url, Field.Store.YES);
+	        fieldList.add(urlField);
+	
+	        Field charsetField = new StoredField(LuceneConfig.FIELD_CHARSET, charset);
+	        fieldList.add(charsetField);
+	
+	        org.jsoup.nodes.Document document = Jsoup.parse(html);
+	
+	        Element titleElement = document.select("title").first();
+	        String title = titleElement != null ? titleElement.text() : "";
+	        Field titleField = new TextField(LuceneConfig.FIELD_TITLE, title, Field.Store.YES);
+	        fieldList.add(titleField);
+	
+	        Element keywordElement = document.select("meta[name=keywords]").first();
+	        String keyword = keywordElement != null ? keywordElement.attr("content").trim() : "";
+	        Field keywordField = new TextField(LuceneConfig.FIELD_KEYWORD, keyword, Field.Store.YES);
+	        fieldList.add(keywordField);
+	
+	        Elements mainElements = document.select("article");
+	        if (mainElements.size() == 0)
+	            mainElements.add(document.body());
+	        
+	        String h = DocumentHelper.getTextFromTags(mainElements, LuceneConfig.H_TAG_LIST);
+	        Field hField = new TextField(LuceneConfig.FIELD_H, h, Field.Store.YES);
+	        fieldList.add(hField);
+	
+	        String content = DocumentHelper.getText(mainElements);
+	        Field contentField = new TextField(LuceneConfig.FIELD_CONTENT, content, Field.Store.YES);
+	        fieldList.add(contentField);
+	
+	        indexWriter.addDocument(fieldList);
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
 
-    private void indexPDF(String contentType, String url, byte[] bytes) throws Exception {
-        List<Field> fieldList = new ArrayList<>();
-
-        Field contentTypeField = new StoredField(LuceneConfig.FIELD_CONTENT_TYPE, contentType);
-        fieldList.add(contentTypeField);
-
-        Field urlField = new StringField(LuceneConfig.FIELD_URL, url, Field.Store.YES);
-        fieldList.add(urlField);
-
-        String title = new File(url).getName();
-        Field titleField = new TextField(LuceneConfig.FIELD_TITLE, title, Field.Store.YES);
-        fieldList.add(titleField);
-
-        String content = new PDFTextStripper().getText(PDDocument.load(bytes));
-        Field contentField = new TextField(LuceneConfig.FIELD_CONTENT, content, Field.Store.YES);
-        fieldList.add(contentField);
-
-        indexWriter.addDocument(fieldList);
+    private void indexPDF(String contentType, String url, byte[] bytes) {
+    	try {
+	        List<Field> fieldList = new ArrayList<>();
+	
+	        Field contentTypeField = new StoredField(LuceneConfig.FIELD_CONTENT_TYPE, contentType);
+	        fieldList.add(contentTypeField);
+	
+	        Field urlField = new StringField(LuceneConfig.FIELD_URL, url, Field.Store.YES);
+	        fieldList.add(urlField);
+	
+	        String title = new File(url).getName();
+	        Field titleField = new TextField(LuceneConfig.FIELD_TITLE, title, Field.Store.YES);
+	        fieldList.add(titleField);
+	
+	        String content = new PDFTextStripper().getText(PDDocument.load(bytes));
+	        Field contentField = new TextField(LuceneConfig.FIELD_CONTENT, content, Field.Store.YES);
+	        fieldList.add(contentField);
+	
+	        indexWriter.addDocument(fieldList);
+    	}
+    	catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
-    private void indexWord(String contentType, String url, byte[] bytes) throws Exception {
-        List<Field> fieldList = new ArrayList<>();
-
-        Field contentTypeField = new StoredField(LuceneConfig.FIELD_CONTENT_TYPE, contentType);
-        fieldList.add(contentTypeField);
-
-        Field urlField = new StringField(LuceneConfig.FIELD_URL, url, Field.Store.YES);
-        fieldList.add(urlField);
-
-        String title = new File(url).getName();
-        Field titleField = new TextField(LuceneConfig.FIELD_TITLE, title, Field.Store.YES);
-        fieldList.add(titleField);
-
-        String typeName = title.substring(title.lastIndexOf('.') + 1);
-        String content;
-        switch (typeName) {
-            case "doc": {
-                HWPFDocument document = new HWPFDocument(new ByteArrayInputStream(bytes));
-                content = document.getDocumentText().replaceAll("\\s+", " ");
-                document.close();
-                break;
-            }
-            case "docx": {
-                POIXMLTextExtractor extractor = new XWPFWordExtractor(new XWPFDocument(new ByteArrayInputStream(bytes)));
-                content = extractor.getText().replaceAll("\\s+", " ");
-                extractor.close();
-                break;
-            }
-            default: {
-                content = "";
-            }
-        }
-        Field contentField = new TextField(LuceneConfig.FIELD_CONTENT, content, Field.Store.YES);
-
-        indexWriter.addDocument(fieldList);
+    private void indexWord(String contentType, String url, byte[] bytes) {
+    	try {
+	        List<Field> fieldList = new ArrayList<>();
+	
+	        Field contentTypeField = new StoredField(LuceneConfig.FIELD_CONTENT_TYPE, contentType);
+	        fieldList.add(contentTypeField);
+	
+	        Field urlField = new StringField(LuceneConfig.FIELD_URL, url, Field.Store.YES);
+	        fieldList.add(urlField);
+	
+	        String title = new File(url).getName();
+	        Field titleField = new TextField(LuceneConfig.FIELD_TITLE, title, Field.Store.YES);
+	        fieldList.add(titleField);
+	
+	        String typeName = title.substring(title.lastIndexOf('.') + 1);
+	        String content;
+	        switch (typeName) {
+	            case "doc": {
+	                HWPFDocument document = new HWPFDocument(new ByteArrayInputStream(bytes));
+	                content = document.getDocumentText().replaceAll("\\s+", " ");
+	                document.close();
+	                break;
+	            }
+	            case "docx": {
+	                POIXMLTextExtractor extractor = new XWPFWordExtractor(new XWPFDocument(new ByteArrayInputStream(bytes)));
+	                content = extractor.getText().replaceAll("\\s+", " ");
+	                extractor.close();
+	                break;
+	            }
+	            default: {
+	                content = "";
+	            }
+	        }
+	        Field contentField = new TextField(LuceneConfig.FIELD_CONTENT, content, Field.Store.YES);
+	
+	        indexWriter.addDocument(fieldList);
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
 
     public void close() throws Exception {
