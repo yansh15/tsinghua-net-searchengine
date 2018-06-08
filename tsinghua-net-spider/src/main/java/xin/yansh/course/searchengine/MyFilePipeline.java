@@ -7,6 +7,9 @@ import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static xin.yansh.course.searchengine.Config.PublicConfig;
 
 public class MyFilePipeline implements Pipeline {
@@ -21,7 +24,7 @@ public class MyFilePipeline implements Pipeline {
     public void process(ResultItems resultItems, Task task) {
         try {
             String contentType = (String) resultItems.getAll().get(PublicConfig.KEY_CONTENT_TYPE);
-            String url = resultItems.getRequest().getUrl();
+            String url = (String) resultItems.getAll().get(PublicConfig.KEY_URL);
             Document document = new Document();
             document.append(PublicConfig.KEY_URL, url);
             document.append(PublicConfig.KEY_CONTENT_TYPE, contentType);
@@ -31,12 +34,15 @@ public class MyFilePipeline implements Pipeline {
                     document.append(PublicConfig.KEY_CHARSET, charset);
                     String html = (String) resultItems.getAll().get(PublicConfig.KEY_HTML);
                     document.append(PublicConfig.KEY_HTML, html);
+                    List<String> links = (List<String>) resultItems.getAll().get(PublicConfig.KEY_LINKS);
+                    document.append(PublicConfig.KEY_LINKS, links);
                     break;
                 }
                 case PublicConfig.PDF_CONTENT_TYPE:
                 case PublicConfig.WORD_CONTENT_TYPE: {
                     byte[] bytes = (byte[]) resultItems.getAll().get(PublicConfig.KEY_BYTES);
                     document.append(PublicConfig.KEY_BYTES, bytes);
+                    document.append(PublicConfig.KEY_LINKS, new ArrayList<String>());
                     break;
                 }
             }
