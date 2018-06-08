@@ -53,6 +53,10 @@ class Config {
     	static final float URL_WEIGHT = 10f;
     	static final float KEYWORD_WEIGHT = 10f;
     }
+    
+    static class PageConfig {
+    	static final int PAGE_SIZE = 10;
+    }
 
     static String getIndexDirectory() {
         return PublicConfig.IS_SMALL ? LuceneConfig.SMALL_INDEX_DIRECTORY : LuceneConfig.INDEX_DIRECTORY;

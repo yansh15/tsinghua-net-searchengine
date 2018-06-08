@@ -47,6 +47,14 @@
             <groupId>com.hankcs.nlp</groupId>
             <artifactId>hanlp-lucene-plugin</artifactId>
         </dependency>
+        <dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		</dependency>
     </dependencies>
 
     <build>

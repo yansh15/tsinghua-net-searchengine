@@ -21,6 +21,7 @@ import com.hankcs.lucene.HanLPAnalyzer;
 
 import static xin.yansh.course.searchengine.Config.LuceneConfig;
 import static xin.yansh.course.searchengine.Config.SearchFieldWeightConfig;
+import static xin.yansh.course.searchengine.Config.PageConfig;
 
 public class StartSearch {
 	private Analyzer analyzer;
@@ -41,10 +42,16 @@ public class StartSearch {
 		weight.put(LuceneConfig.FIELD_URL, SearchFieldWeightConfig.URL_WEIGHT);
 	}
 	
-	public TopDocs searchQuery(String queryString) throws Exception {
+	public TopDocs searchQuery(String queryString, int page) throws Exception {
 		QueryParser parser = new MultiFieldQueryParser(new String[] {LuceneConfig.FIELD_CONTENT, LuceneConfig.FIELD_TITLE, LuceneConfig.FIELD_KEYWORD, LuceneConfig.FIELD_URL, LuceneConfig.FIELD_H}, analyzer, weight);
 		Query my_query = parser.parse(queryString);
-		TopDocs topDocs = searcher.search(my_query, 10);
+		TopDocs topDocs;
+		if (page == 0)
+			topDocs = searcher.search(my_query, PageConfig.PAGE_SIZE);
+		else {
+			topDocs = searcher.search(my_query, PageConfig.PAGE_SIZE * page);
+			topDocs = searcher.searchAfter(topDocs.scoreDocs[topDocs.scoreDocs.length - 1], my_query, PageConfig.PAGE_SIZE);
+		}
 		if (topDocs.totalHits == 0)
 			System.out.println("No Hits");
 		else {
@@ -59,14 +66,20 @@ public class StartSearch {
 		return topDocs;
 	}
 	
-	void close() throws Exception {
+	public String getUrl(ScoreDoc doc) throws Exception {
+		Document document = searcher.doc(doc.doc);
+		return document.get("url");
+	}
+	
+	private void close() throws Exception {
 		analyzer.close();
 		reader.close();
 	}
 	
 	public static void main(String[] args) throws Exception {
 		StartSearch startSearch = new StartSearch();
-		startSearch.searchQuery("秦腔");
+		startSearch.searchQuery("秦腔", 0);
+		startSearch.searchQuery("秦腔", 1);
 		startSearch.close();
 	}
 }
