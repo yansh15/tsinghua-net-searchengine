@@ -29,7 +29,7 @@ public class MyPageProcessor implements PageProcessor {
 
     public MyPageProcessor(Set<String> domains) {
         super();
-        this.site = Site.me().setRetryTimes(3).setTimeOut(20000).setSleepTime(10);
+        this.site = Site.me().setRetryTimes(3).setTimeOut(PublicConfig.THREADS * 1000).setSleepTime(PublicConfig.THREADS);
         this.domains = domains;
         this.pageCntMutex = new Object();
         this.pageCnt = 0;

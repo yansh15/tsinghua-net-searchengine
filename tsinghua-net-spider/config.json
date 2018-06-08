@@ -1,4 +1,4 @@
 {
-  "is-small": true,
-  "threads": 50
+  "is-small": false,
+  "threads": 20
 }
