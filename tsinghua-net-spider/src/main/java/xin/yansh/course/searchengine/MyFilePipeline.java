@@ -3,9 +3,9 @@ package xin.yansh.course.searchengine;
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
-import us.codecraft.webmagic.ResultItems;
-import us.codecraft.webmagic.Task;
-import us.codecraft.webmagic.pipeline.Pipeline;
+import xin.yansh.course.searchengine.spider.ResultItems;
+import xin.yansh.course.searchengine.spider.Task;
+import xin.yansh.course.searchengine.spider.pipeline.Pipeline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +63,8 @@ public class MyFilePipeline implements Pipeline {
                 link = null;
             links = null;
             bytes = null;
+            resultItems = null;
+            task = null;
         } catch (MongoException e) {
             e.printStackTrace();
         }

@@ -5,11 +5,10 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.json.JSONObject;
-import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.scheduler.BloomFilterDuplicateRemover;
-import us.codecraft.webmagic.scheduler.QueueScheduler;
+import xin.yansh.course.searchengine.spider.Spider;
+import xin.yansh.course.searchengine.spider.scheduler.BloomFilterDuplicateRemover;
+import xin.yansh.course.searchengine.spider.scheduler.QueueScheduler;
 
-import java.awt.print.Book;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -44,8 +43,10 @@ public class App {
 
         MongoCollection<Document> collection = database.getCollection(PublicConfig.getCollectionName());
 
-        Spider spider = Spider.create(new MyPageProcessor(domains))
-                .setScheduler(new QueueScheduler().setDuplicateRemover(new BloomFilterDuplicateRemover(100000000, 0.01)))
+        QueueScheduler scheduler = (QueueScheduler) new QueueScheduler().setDuplicateRemover(new BloomFilterDuplicateRemover(10000000, 0.001));
+
+        Spider spider = Spider.create(new MyPageProcessor(domains, scheduler))
+                .setScheduler(scheduler)
                 .addPipeline(new MyFilePipeline(collection))
                 .thread(PublicConfig.THREADS);
         for (String seed : seeds)

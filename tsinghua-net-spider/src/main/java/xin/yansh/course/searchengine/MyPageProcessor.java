@@ -1,8 +1,9 @@
 package xin.yansh.course.searchengine;
 
-import us.codecraft.webmagic.Page;
-import us.codecraft.webmagic.Site;
-import us.codecraft.webmagic.processor.PageProcessor;
+import xin.yansh.course.searchengine.spider.Page;
+import xin.yansh.course.searchengine.spider.Site;
+import xin.yansh.course.searchengine.spider.processor.PageProcessor;
+import xin.yansh.course.searchengine.spider.scheduler.QueueScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import static xin.yansh.course.searchengine.Config.PublicConfig;
 public class MyPageProcessor implements PageProcessor {
     private Site site;
     private final Set<String> domains;
+    private final QueueScheduler scheduler;
     private final Object pageCntMutex;
     private int pageCnt;
 
@@ -27,10 +29,11 @@ public class MyPageProcessor implements PageProcessor {
         return cnt;
     }
 
-    public MyPageProcessor(Set<String> domains) {
+    public MyPageProcessor(Set<String> domains, QueueScheduler scheduler) {
         super();
-        this.site = Site.me().setRetryTimes(3).setTimeOut(PublicConfig.THREADS * 1000).setSleepTime(PublicConfig.THREADS);
+        this.site = Site.me().setTimeOut(PublicConfig.THREADS * 1000).setSleepTime(10);
         this.domains = domains;
+        this.scheduler = scheduler;
         this.pageCntMutex = new Object();
         this.pageCnt = 0;
     }
@@ -56,7 +59,7 @@ public class MyPageProcessor implements PageProcessor {
         }
         String url = page.getRequest().getUrl();
         synchronized (pageCntMutex) {
-            System.out.println(pageCnt + "\t\t" + url);
+            System.out.println(scheduler.getTotalRequestsCount(null) + "\t" + scheduler.getLeftRequestsCount(null) + "\t" + pageCnt + "\t" + url);
             ++pageCnt;
         }
         Matcher urlMatcher = PageProcessorConfig.PATTERN.matcher(url);
@@ -84,7 +87,7 @@ public class MyPageProcessor implements PageProcessor {
                     }
                 }
                 page.putField(PublicConfig.KEY_LINKS, targets);
-                page.addTargetRequests(targets);
+                page.addTargetUrls(targets);
                 break;
             }
             case PDF: {
