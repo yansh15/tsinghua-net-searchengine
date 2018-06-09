@@ -1,6 +1,5 @@
 package xin.yansh.course.searchengine.spider;
 
-import xin.yansh.course.searchengine.spider.Task;
 import xin.yansh.course.searchengine.spider.utils.HttpConstant;
 
 import java.util.*;
@@ -35,35 +34,15 @@ public class Site {
         DEFAULT_STATUS_CODE_SET.add(HttpConstant.StatusCode.CODE_200);
     }
 
-    /**
-     * new a Site
-     *
-     * @return new site
-     */
     public static Site me() {
         return new Site();
     }
 
-    /**
-     * Add a cookie with domain {@link #getDomain()}
-     *
-     * @param name  name
-     * @param value value
-     * @return this
-     */
     public Site addCookie(String name, String value) {
         defaultCookies.put(name, value);
         return this;
     }
 
-    /**
-     * Add a cookie with specific domain.
-     *
-     * @param domain domain
-     * @param name   name
-     * @param value  value
-     * @return this
-     */
     public Site addCookie(String domain, String name, String value) {
         if (!cookies.containsKey(domain)) {
             cookies.put(domain, new HashMap<String, String>());
@@ -72,81 +51,37 @@ public class Site {
         return this;
     }
 
-    /**
-     * set user agent
-     *
-     * @param userAgent userAgent
-     * @return this
-     */
     public Site setUserAgent(String userAgent) {
         this.userAgent = userAgent;
         return this;
     }
 
-    /**
-     * get cookies
-     *
-     * @return get cookies
-     */
     public Map<String, String> getCookies() {
         return defaultCookies;
     }
 
-    /**
-     * get cookies of all domains
-     *
-     * @return get cookies
-     */
     public Map<String, Map<String, String>> getAllCookies() {
         return cookies;
     }
 
-    /**
-     * get user agent
-     *
-     * @return user agent
-     */
     public String getUserAgent() {
         return userAgent;
     }
 
-    /**
-     * get domain
-     *
-     * @return get domain
-     */
     public String getDomain() {
         return domain;
     }
 
-    /**
-     * set the domain of site.
-     *
-     * @param domain domain
-     * @return this
-     */
     public Site setDomain(String domain) {
         this.domain = domain;
         return this;
     }
 
-    /**
-     * Set charset of page manually.<br>
-     * When charset is not set or set to null, it can be auto detected by Http header.
-     *
-     * @param charset charset
-     * @return this
-     */
     public Site setCharset(String charset) {
         this.charset = charset;
         return this;
     }
 
-    /**
-     * get charset set manually
-     *
-     * @return charset
-     */
     public String getCharset() {
         return charset;
     }
@@ -155,58 +90,25 @@ public class Site {
         return timeOut;
     }
 
-    /**
-     * set timeout for downloader in ms
-     *
-     * @param timeOut timeOut
-     * @return this
-     */
     public Site setTimeOut(int timeOut) {
         this.timeOut = timeOut;
         return this;
     }
 
-    /**
-     * Set acceptStatCode.<br>
-     * When status code of http response is in acceptStatCodes, it will be processed.<br>
-     * {200} by default.<br>
-     * It is not necessarily to be set.<br>
-     *
-     * @param acceptStatCode acceptStatCode
-     * @return this
-     */
     public Site setAcceptStatCode(Set<Integer> acceptStatCode) {
         this.acceptStatCode = acceptStatCode;
         return this;
     }
 
-    /**
-     * get acceptStatCode
-     *
-     * @return acceptStatCode
-     */
     public Set<Integer> getAcceptStatCode() {
         return acceptStatCode;
     }
 
-    /**
-     * Set the interval between the processing of two pages.<br>
-     * Time unit is micro seconds.<br>
-     *
-     * @param sleepTime sleepTime
-     * @return this
-     */
     public Site setSleepTime(int sleepTime) {
         this.sleepTime = sleepTime;
         return this;
     }
 
-    /**
-     * Get the interval between the processing of two pages.<br>
-     * Time unit is micro seconds.<br>
-     *
-     * @return the interval between the processing of two pages,
-     */
     public int getSleepTime() {
         return sleepTime;
     }
@@ -215,14 +117,6 @@ public class Site {
         return headers;
     }
 
-    /**
-     * Put an Http header for downloader. <br>
-     * Use {@link #addCookie(String, String)} for cookie and {@link #setUserAgent(String)} for user-agent. <br>
-     *
-     * @param key   key of http header, there are some keys constant in {@link HttpConstant.Header}
-     * @param value value of header
-     * @return this
-     */
     public Site addHeader(String key, String value) {
         headers.put(key, value);
         return this;
@@ -232,13 +126,6 @@ public class Site {
         return useGzip;
     }
 
-    /**
-     * Whether use gzip. <br>
-     * Default is true, you can set it to false to disable gzip.
-     *
-     * @param useGzip useGzip
-     * @return this
-     */
     public Site setUseGzip(boolean useGzip) {
         this.useGzip = useGzip;
         return this;
@@ -248,14 +135,6 @@ public class Site {
         return disableCookieManagement;
     }
 
-    /**
-     * Downloader is supposed to store response cookie.
-     * Disable it to ignore all cookie fields and stay clean.
-     * Warning: Set cookie will still NOT work if disableCookieManagement is true.
-     *
-     * @param disableCookieManagement disableCookieManagement
-     * @return this
-     */
     public Site setDisableCookieManagement(boolean disableCookieManagement) {
         this.disableCookieManagement = disableCookieManagement;
         return this;

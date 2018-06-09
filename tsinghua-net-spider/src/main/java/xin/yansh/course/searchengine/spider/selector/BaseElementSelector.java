@@ -2,16 +2,10 @@ package xin.yansh.course.searchengine.spider.selector;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
-import xin.yansh.course.searchengine.spider.selector.ElementSelector;
-import xin.yansh.course.searchengine.spider.selector.Selector;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author code4crafter@gmail.com
- * @since 0.3.0
- */
 public abstract class BaseElementSelector implements Selector, ElementSelector {
 
     @Override

@@ -1,8 +1,6 @@
 package xin.yansh.course.searchengine.spider.selector;
 
 import org.apache.commons.lang3.StringUtils;
-import xin.yansh.course.searchengine.spider.selector.RegexResult;
-import xin.yansh.course.searchengine.spider.selector.Selector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-/**
- * Selector in regex.<br>
- *
- * @author code4crafter@gmail.com <br>
- * @since 0.1.0
- */
 public class RegexSelector implements Selector {
 
     private String regexStr;
@@ -41,10 +33,6 @@ public class RegexSelector implements Selector {
         }
     }
 
-    /**
-     * Create a RegexSelector. When there is no capture group, the value is set to 0 else set to 1.
-     * @param regexStr
-     */
     public RegexSelector(String regexStr) {
         this.compileRegex(regexStr);
         if (regex.matcher("").groupCount() == 0) {

@@ -1,9 +1,5 @@
 package xin.yansh.course.searchengine.spider.proxy;
 
-/**
- * 
- */
-
 public class Proxy {
 
 	private String host;

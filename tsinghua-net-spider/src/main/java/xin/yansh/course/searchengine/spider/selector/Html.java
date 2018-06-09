@@ -5,32 +5,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xin.yansh.course.searchengine.spider.selector.ElementSelector;
-import xin.yansh.course.searchengine.spider.selector.HtmlNode;
-import xin.yansh.course.searchengine.spider.selector.Selector;
 
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Selectable html.<br>
- *
- * @author code4crafter@gmail.com <br>
- * @since 0.1.0
- */
 public class Html extends HtmlNode {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-	/**
-	 * Disable jsoup html entity escape. It can be set just before any Html instance is created.
-     * @deprecated
-	 */
 	public static boolean DISABLE_HTML_ENTITY_ESCAPE = false;
 
-    /**
-     * Store parsed document for better performance when only one text exist.
-     */
     private Document document;
 
     public Html(String text, String url) {
@@ -64,10 +48,6 @@ public class Html extends HtmlNode {
         return Collections.<Element>singletonList(getDocument());
     }
 
-    /**
-     * @param selector selector
-     * @return result
-     */
     public String selectDocument(Selector selector) {
         if (selector instanceof ElementSelector) {
             ElementSelector elementSelector = (ElementSelector) selector;

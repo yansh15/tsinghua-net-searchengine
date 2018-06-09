@@ -1,16 +1,8 @@
 package xin.yansh.course.searchengine.spider.selector;
 
-import xin.yansh.course.searchengine.spider.selector.Selector;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * All selectors will be arranged as a pipeline. <br>
- * The next selector uses the result of the previous as source.
- * @author code4crafter@gmail.com <br>
- * @since 0.2.0
- */
 public class AndSelector implements xin.yansh.course.searchengine.spider.selector.Selector {
 
     private List<xin.yansh.course.searchengine.spider.selector.Selector> selectors = new ArrayList<xin.yansh.course.searchengine.spider.selector.Selector>();

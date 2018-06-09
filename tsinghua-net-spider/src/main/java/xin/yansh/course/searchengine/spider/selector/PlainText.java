@@ -1,18 +1,8 @@
 package xin.yansh.course.searchengine.spider.selector;
 
-import xin.yansh.course.searchengine.spider.selector.AbstractSelectable;
-import xin.yansh.course.searchengine.spider.selector.Selectable;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Selectable plain text.<br>
- * Can not be selected by XPath or CSS Selector.
- *
- * @author code4crafter@gmail.com <br>
- * @since 0.1.0
- */
 public class PlainText extends AbstractSelectable {
 
     protected List<String> sourceTexts;

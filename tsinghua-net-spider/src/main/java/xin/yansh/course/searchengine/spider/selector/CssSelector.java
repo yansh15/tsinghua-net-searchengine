@@ -5,17 +5,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
-import xin.yansh.course.searchengine.spider.selector.BaseElementSelector;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * CSS selector. Based on Jsoup.
- *
- * @author code4crafter@gmail.com <br>
- * @since 0.1.0
- */
 public class CssSelector extends BaseElementSelector {
 
     private String selectorText;

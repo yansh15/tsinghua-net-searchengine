@@ -1,18 +1,10 @@
 package xin.yansh.course.searchengine.spider.selector;
 
 import com.alibaba.fastjson.JSON;
-import xin.yansh.course.searchengine.spider.selector.JsonPathSelector;
-import xin.yansh.course.searchengine.spider.selector.PlainText;
-import xin.yansh.course.searchengine.spider.selector.Selectable;
 import us.codecraft.xsoup.XTokenQueue;
 
 import java.util.List;
 
-/**
- * parse json
- * @author code4crafter@gmail.com
- * @since 0.5.0
- */
 public class Json extends PlainText {
 
     public Json(List<String> strings) {
@@ -23,11 +15,6 @@ public class Json extends PlainText {
         super(text);
     }
 
-    /**
-     * remove padding for JSONP
-     * @param padding padding
-     * @return json after padding removed
-     */
     public Json removePadding(String padding) {
         String text = getFirstSourceText();
         XTokenQueue tokenQueue = new XTokenQueue(text);

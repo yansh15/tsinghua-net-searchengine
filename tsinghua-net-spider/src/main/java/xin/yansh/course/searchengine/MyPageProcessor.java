@@ -11,8 +11,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 
 import static xin.yansh.course.searchengine.Config.ContentType;
-import static xin.yansh.course.searchengine.Config.PageProcessorConfig;
-import static xin.yansh.course.searchengine.Config.PublicConfig;
 
 public class MyPageProcessor implements PageProcessor {
     private Site site;
@@ -31,7 +29,7 @@ public class MyPageProcessor implements PageProcessor {
 
     public MyPageProcessor(Set<String> domains, QueueScheduler scheduler) {
         super();
-        this.site = Site.me().setTimeOut(PublicConfig.THREADS * 1000).setSleepTime(10);
+        this.site = Site.me().setTimeOut(Config.THREADS * 1000).setSleepTime(Config.SLEEP_TIME);
         this.domains = domains;
         this.scheduler = scheduler;
         this.pageCntMutex = new Object();
@@ -47,11 +45,11 @@ public class MyPageProcessor implements PageProcessor {
         }
         String contentTypeString = contentTypeList.get(0);
         ContentType contentType;
-        if (contentTypeString.contains(PublicConfig.HTML_CONTENT_TYPE)) {
+        if (contentTypeString.contains(Config.HTML_CONTENT_TYPE)) {
             contentType = ContentType.HTML;
-        } else if (contentTypeString.contains(PublicConfig.PDF_CONTENT_TYPE)) {
+        } else if (contentTypeString.contains(Config.PDF_CONTENT_TYPE)) {
             contentType = ContentType.PDF;
-        } else if (contentTypeString.contains(PublicConfig.WORD_CONTENT_TYPE)) {
+        } else if (contentTypeString.contains(Config.WORD_CONTENT_TYPE)) {
             contentType = ContentType.WORD;
         } else {
             page.setSkip(true);
@@ -62,22 +60,22 @@ public class MyPageProcessor implements PageProcessor {
             System.out.println(scheduler.getTotalRequestsCount(null) + "\t" + scheduler.getLeftRequestsCount(null) + "\t" + pageCnt + "\t" + url);
             ++pageCnt;
         }
-        Matcher urlMatcher = PageProcessorConfig.PATTERN.matcher(url);
+        Matcher urlMatcher = Config.PATTERN.matcher(url);
         if (!urlMatcher.matches()) {
             page.setSkip(true);
             return;
         }
-        page.putField(PublicConfig.KEY_URL, urlMatcher.group(1));
+        page.putField(Config.KEY_URL, urlMatcher.group(1));
         switch (contentType) {
             case HTML: {
-                page.putField(PublicConfig.KEY_CONTENT_TYPE, PublicConfig.HTML_CONTENT_TYPE);
-                page.putField(PublicConfig.KEY_CHARSET, page.getHtml().getDocument().charset().toString());
-                page.putField(PublicConfig.KEY_HTML, page.getHtml().toString().replaceAll("\\s+", " "));
+                page.putField(Config.KEY_CONTENT_TYPE, Config.HTML_CONTENT_TYPE);
+                page.putField(Config.KEY_CHARSET, page.getHtml().getDocument().charset().toString());
+                page.putField(Config.KEY_HTML, page.getHtml().toString().replaceAll("\\s+", " "));
                 List<String> targets = new ArrayList<>();
                 for (String target : page.getHtml().links().all()) {
                     if (count(target, '?') > 1)
                         continue;
-                    Matcher matcher = PageProcessorConfig.PATTERN.matcher(target);
+                    Matcher matcher = Config.PATTERN.matcher(target);
                     if (!matcher.matches())
                         continue;
                     String domain = matcher.group(2);
@@ -86,18 +84,18 @@ public class MyPageProcessor implements PageProcessor {
                             targets.add(matcher.group(1));
                     }
                 }
-                page.putField(PublicConfig.KEY_LINKS, targets);
+                page.putField(Config.KEY_LINKS, targets);
                 page.addTargetUrls(targets);
                 break;
             }
             case PDF: {
-                page.putField(PublicConfig.KEY_CONTENT_TYPE, PublicConfig.PDF_CONTENT_TYPE);
-                page.putField(PublicConfig.KEY_BYTES, page.getBytes());
+                page.putField(Config.KEY_CONTENT_TYPE, Config.PDF_CONTENT_TYPE);
+                page.putField(Config.KEY_BYTES, page.getBytes());
                 break;
             }
             case WORD: {
-                page.putField(PublicConfig.KEY_CONTENT_TYPE, PublicConfig.WORD_CONTENT_TYPE);
-                page.putField(PublicConfig.KEY_BYTES, page.getBytes());
+                page.putField(Config.KEY_CONTENT_TYPE, Config.WORD_CONTENT_TYPE);
+                page.putField(Config.KEY_BYTES, page.getBytes());
                 break;
             }
         }

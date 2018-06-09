@@ -3,17 +3,10 @@ package xin.yansh.course.searchengine.spider.selector;
 import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import xin.yansh.course.searchengine.spider.selector.BaseElementSelector;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Links selector based on jsoup. Use absolute url. <br>
- *
- * @author code4crafter@gmail.com <br>
- * @since 0.7.0
- */
 public class LinksSelector extends BaseElementSelector {
 
     @Override

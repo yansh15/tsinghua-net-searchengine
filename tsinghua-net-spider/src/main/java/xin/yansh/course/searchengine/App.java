@@ -1,12 +1,14 @@
 package xin.yansh.course.searchengine;
 
-import com.mongodb.MongoClient;
+import com.alibaba.fastjson.JSON;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 import xin.yansh.course.searchengine.spider.Spider;
-import xin.yansh.course.searchengine.spider.scheduler.BloomFilterDuplicateRemover;
+import xin.yansh.course.searchengine.spider.scheduler.component.BloomFilterDuplicateRemover;
 import xin.yansh.course.searchengine.spider.scheduler.QueueScheduler;
 
 import java.io.*;
@@ -15,42 +17,37 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static xin.yansh.course.searchengine.Config.PublicConfig;
-
 public class App {
     public static void main(String[] args) throws Exception {
-        InputStream configInputStream = new FileInputStream(new File(PublicConfig.CONFIG_FILE));
+        InputStream configInputStream = new FileInputStream(new File(Config.CONFIG_FILE));
         byte[] buffer = new byte[configInputStream.available()];
         configInputStream.read(buffer);
-        JSONObject config = new JSONObject(new String(buffer, "UTF-8"));
-        PublicConfig.IS_SMALL = config.getBoolean("is-small");
-        PublicConfig.THREADS = config.getInt("threads");
+        JSONObject config = JSON.parseObject(new String(buffer, "UTF-8"));
+        Config.IS_SMALL = config.getBoolean(Config.JSON_IS_SMALL);
+        Config.THREADS = config.getIntValue(Config.JSON_THREADS);
+        Config.SLEEP_TIME = config.getIntValue(Config.JSON_SLEEP_TIME);
 
-        MongoClient client = new MongoClient();
-        MongoDatabase database = client.getDatabase(PublicConfig.DATABASE_NAME);
+        MongoClient client = MongoClients.create();
+        MongoDatabase database = client.getDatabase(Config.DATABASE_NAME);
 
         List<String> seeds = new ArrayList<>();
-        BufferedReader seedReader = new BufferedReader(new InputStreamReader(App.class.getResourceAsStream(PublicConfig.getSeedFile()), "UTF-8"));
-        for (String seed = seedReader.readLine(); seed != null && seed.length() != 0; seed = seedReader.readLine())
-            seeds.add(seed);
-        seedReader.close();
+        for (Object object : config.getJSONArray(Config.getSeedKey()))
+            seeds.add((String) object);
 
         Set<String> domains = new HashSet<>();
-        BufferedReader domainReader = new BufferedReader(new InputStreamReader(App.class.getResourceAsStream(PublicConfig.getDomainFile()), "UTF-8"));
-        for (String domain = domainReader.readLine(); domain != null && domain.length() != 0; domain = domainReader.readLine())
-            domains.add(domain);
-        domainReader.close();
+        for (Object object : config.getJSONArray(Config.getDomainKey()))
+            domains.add((String) object);
 
-        MongoCollection<Document> collection = database.getCollection(PublicConfig.getCollectionName());
+        MongoCollection<Document> collection = database.getCollection(Config.getCollectionName());
+        collection.drop();
 
         QueueScheduler scheduler = (QueueScheduler) new QueueScheduler().setDuplicateRemover(new BloomFilterDuplicateRemover(10000000, 0.001));
 
-        Spider spider = Spider.create(new MyPageProcessor(domains, scheduler))
+        Spider.create(new MyPageProcessor(domains, scheduler))
                 .setScheduler(scheduler)
                 .addPipeline(new MyFilePipeline(collection))
-                .thread(PublicConfig.THREADS);
-        for (String seed : seeds)
-            spider.addUrl(seed);
-        spider.run();
+                .startUrls(seeds)
+                .thread(Config.THREADS)
+                .run();
     }
 }

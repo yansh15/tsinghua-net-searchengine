@@ -12,10 +12,6 @@ import xin.yansh.course.searchengine.spider.Page;
 import xin.yansh.course.searchengine.spider.Request;
 import xin.yansh.course.searchengine.spider.Site;
 import xin.yansh.course.searchengine.spider.Task;
-import xin.yansh.course.searchengine.spider.downloader.AbstractDownloader;
-import xin.yansh.course.searchengine.spider.downloader.HttpClientGenerator;
-import xin.yansh.course.searchengine.spider.downloader.HttpClientRequestContext;
-import xin.yansh.course.searchengine.spider.downloader.HttpUriRequestConverter;
 import xin.yansh.course.searchengine.spider.proxy.Proxy;
 import xin.yansh.course.searchengine.spider.proxy.ProxyProvider;
 import xin.yansh.course.searchengine.spider.selector.PlainText;
@@ -27,13 +23,6 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-
-/**
- * The http downloader based on HttpClient.
- *
- * @author code4crafter@gmail.com <br>
- * @since 0.1.0
- */
 @ThreadSafe
 public class HttpClientDownloader extends AbstractDownloader {
 

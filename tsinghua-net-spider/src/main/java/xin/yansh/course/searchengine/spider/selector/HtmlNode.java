@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-/**
- * @author code4crafer@gmail.com
- */
 public class HtmlNode extends AbstractSelectable {
 
     private final List<Element> elements;
@@ -50,12 +47,6 @@ public class HtmlNode extends AbstractSelectable {
         return selectList(selector);
     }
 
-    /**
-     * select elements
-     *
-     * @param elementSelector elementSelector
-     * @return result
-     */
     protected Selectable selectElements(BaseElementSelector elementSelector) {
         ListIterator<Element> elementIterator = getElements().listIterator();
         if (!elementSelector.hasAttribute()) {
@@ -79,13 +70,6 @@ public class HtmlNode extends AbstractSelectable {
         }
     }
 
-    /**
-     * Only document can be select
-     * See: https://github.com/code4craft/webmagic/issues/113
-     *
-     * @param elementIterator elementIterator
-     * @return element element
-     */
     private Element checkElementAndConvert(ListIterator<Element> elementIterator) {
         Element element = elementIterator.next();
         if (!(element instanceof Document)) {

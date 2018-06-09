@@ -1,20 +1,10 @@
 package xin.yansh.course.searchengine.spider.selector;
 
 import org.apache.commons.collections.CollectionUtils;
-import xin.yansh.course.searchengine.spider.selector.PlainText;
-import xin.yansh.course.searchengine.spider.selector.RegexSelector;
-import xin.yansh.course.searchengine.spider.selector.ReplaceSelector;
-import xin.yansh.course.searchengine.spider.selector.Selectable;
-import xin.yansh.course.searchengine.spider.selector.Selector;
-import xin.yansh.course.searchengine.spider.selector.Selectors;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author code4crafer@gmail.com
- * @since 0.5.2
- */
 public abstract class AbstractSelectable implements xin.yansh.course.searchengine.spider.selector.Selectable {
 
     protected abstract List<String> getSourceTexts();

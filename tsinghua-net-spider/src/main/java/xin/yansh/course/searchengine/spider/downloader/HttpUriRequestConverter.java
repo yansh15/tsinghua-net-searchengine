@@ -16,20 +16,12 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import xin.yansh.course.searchengine.spider.Request;
 import xin.yansh.course.searchengine.spider.Site;
-import xin.yansh.course.searchengine.spider.downloader.HttpClientRequestContext;
 import xin.yansh.course.searchengine.spider.proxy.Proxy;
 import xin.yansh.course.searchengine.spider.utils.HttpConstant;
 import xin.yansh.course.searchengine.spider.utils.UrlUtils;
 
 import java.util.Map;
 
-/**
- * @author code4crafter@gmail.com
- *         Date: 17/3/18
- *         Time: 11:28
- *
- * @since 0.7.0
- */
 public class HttpUriRequestConverter {
 
     public HttpClientRequestContext convert(Request request, Site site, Proxy proxy) {

@@ -18,23 +18,12 @@ public class Request implements Serializable {
 
     private HttpRequestBody requestBody;
 
-    /**
-     * Store additional information in extras.
-     */
     private Map<String, Object> extras;
 
-    /**
-     * cookies for current url, if not set use Site's cookies
-     */
     private Map<String, String> cookies = new HashMap<String, String>();
 
     private Map<String, String> headers = new HashMap<String, String>();
-    private long priority;
 
-    /**
-     * When it is set to TRUE, the downloader will not try to parse response body to text.
-     *
-     */
     private boolean binaryContent = false;
 
     private String charset;
@@ -45,11 +34,6 @@ public class Request implements Serializable {
     public Request(String url) {
         this.url = url;
     }
-
-    public long getPriority() {
-        return priority;
-    }
-
 
     public Object getExtra(String key) {
         if (extras == null) {
@@ -167,7 +151,6 @@ public class Request implements Serializable {
                 "url='" + url + '\'' +
                 ", method='" + method + '\'' +
                 ", extras=" + extras +
-                ", priority=" + priority +
                 ", headers=" + headers +
                 ", cookies="+ cookies+
                 '}';

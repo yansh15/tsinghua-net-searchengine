@@ -3,12 +3,6 @@ package xin.yansh.course.searchengine.spider.downloader;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
 
-/**
- * @author code4crafter@gmail.com
- *         Date: 17/4/8
- *         Time: 19:43
- * @since 0.7.0
- */
 public class HttpClientRequestContext {
 
     private HttpUriRequest httpUriRequest;

@@ -1,21 +1,8 @@
 package xin.yansh.course.searchengine.spider;
 
-import xin.yansh.course.searchengine.spider.Page;
-import xin.yansh.course.searchengine.spider.Request;
-
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Object contains extract results.<br>
- * It is contained in Page and will be processed in pipeline.
- *
- * @author code4crafter@gmail.com <br>
- * @since 0.1.0
- * @see Page
- * @see xin.yansh.course.searchengine.spider.pipeline.Pipeline
- */
 public class ResultItems {
 
     private Map<String, Object> fields = new LinkedHashMap<String, Object>();
@@ -50,24 +37,10 @@ public class ResultItems {
         return this;
     }
 
-    /**
-     * Whether to skip the result.<br>
-     * Result which is skipped will not be processed by Pipeline.
-     *
-     * @return whether to skip the result
-     */
     public boolean isSkip() {
         return skip;
     }
 
-
-    /**
-     * Set whether to skip the result.<br>
-     * Result which is skipped will not be processed by Pipeline.
-     *
-     * @param skip whether to skip the result
-     * @return this
-     */
     public ResultItems setSkip(boolean skip) {
         this.skip = skip;
         return this;

@@ -2,21 +2,12 @@ package xin.yansh.course.searchengine.spider.proxy;
 
 import xin.yansh.course.searchengine.spider.Page;
 import xin.yansh.course.searchengine.spider.Task;
-import xin.yansh.course.searchengine.spider.proxy.Proxy;
-import xin.yansh.course.searchengine.spider.proxy.ProxyProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * A simple ProxyProvider. Provide proxy as round-robin without heartbeat and error check. It can be used when all proxies are stable.
- * @author code4crafter@gmail.com
- *         Date: 17/4/16
- *         Time: 10:18
- * @since 0.7.0
- */
 public class SimpleProxyProvider implements ProxyProvider {
 
     private final List<xin.yansh.course.searchengine.spider.proxy.Proxy> proxies;
@@ -42,7 +33,6 @@ public class SimpleProxyProvider implements ProxyProvider {
 
     @Override
     public void returnProxy(xin.yansh.course.searchengine.spider.proxy.Proxy proxy, Page page, Task task) {
-        //Donothing
     }
 
     @Override

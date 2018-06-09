@@ -2,18 +2,11 @@ package xin.yansh.course.searchengine.spider.selector;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.jsoup.nodes.Element;
-import xin.yansh.course.searchengine.spider.selector.BaseElementSelector;
 import us.codecraft.xsoup.XPathEvaluator;
 import us.codecraft.xsoup.Xsoup;
 
 import java.util.List;
 
-/**
- * XPath selector based on Xsoup.<br>
- *
- * @author code4crafter@gmail.com <br>
- * @since 0.3.0
- */
 public class XpathSelector extends BaseElementSelector {
 
     private XPathEvaluator xPathEvaluator;
