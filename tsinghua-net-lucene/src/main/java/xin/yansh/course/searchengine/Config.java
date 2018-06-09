@@ -7,7 +7,16 @@ class Config {
     static class PublicConfig {
         static final Boolean IS_SMALL = true;
     }
-
+    
+    static class ScoreConfig {
+    	/*
+    	 * Score = BM25_Score * (Coefficient * PageRank_Score + Bias) (if With_PageRank else BM25_Score);
+    	 */
+    	static final Boolean WITH_PAGERANK = true;
+    	static final float COEF_PAGERANK = 1f;
+    	static final float BIAS_PAGERANK = 1f;
+    }
+    
     static class LuceneConfig {
         static final String INDEX_DIRECTORY = "../PageIndex";
         static final String SMALL_INDEX_DIRECTORY = "../SmallPageIndex";
@@ -19,6 +28,7 @@ class Config {
         static final String FIELD_KEYWORD = "keyword";
         static final String FIELD_H = "h";
         static final String FIELD_CONTENT = "content";
+        static final String FIELD_PAGERANK = "pagerank";
 
         static final List<String> H_TAG_LIST = new ArrayList<String>() {{
             add("h1"); add("h2"); add("h3"); add("h4"); add("h5"); add("h6");

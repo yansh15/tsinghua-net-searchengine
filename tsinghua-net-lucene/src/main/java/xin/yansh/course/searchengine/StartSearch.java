@@ -8,8 +8,10 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queries.function.FunctionScoreQuery;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.DoubleValuesSource;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -44,7 +46,8 @@ public class StartSearch {
 	
 	public TopDocs searchQuery(String queryString, int page) throws Exception {
 		QueryParser parser = new MultiFieldQueryParser(new String[] {LuceneConfig.FIELD_CONTENT, LuceneConfig.FIELD_TITLE, LuceneConfig.FIELD_KEYWORD, LuceneConfig.FIELD_URL, LuceneConfig.FIELD_H}, analyzer, weight);
-		Query my_query = parser.parse(queryString);
+		Query parsed_query = parser.parse(queryString);
+		Query my_query = new MyScoreQuery(parsed_query);
 		TopDocs topDocs;
 		if (page == 0)
 			topDocs = searcher.search(my_query, PageConfig.PAGE_SIZE);
@@ -60,7 +63,7 @@ public class StartSearch {
 			for (int i = 0; i < docs.length; ++i) {
 				ScoreDoc doc = docs[i];
 				Document document = searcher.doc(doc.doc);
-				System.out.println(doc + "[" + document.get("url") + "]");
+				System.out.println(doc + "[" + document.get("url") + "]" + " pagerank=" + document.get(LuceneConfig.FIELD_PAGERANK));
 			}
 		}
 		return topDocs;
@@ -78,8 +81,8 @@ public class StartSearch {
 	
 	public static void main(String[] args) throws Exception {
 		StartSearch startSearch = new StartSearch();
-		startSearch.searchQuery("秦腔", 0);
-		startSearch.searchQuery("秦腔", 1);
+		startSearch.searchQuery("建筑", 0);
+		// startSearch.searchQuery("秦腔", 1);
 		startSearch.close();
 	}
 }

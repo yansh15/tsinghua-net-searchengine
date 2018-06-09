@@ -6,7 +6,6 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
 import static xin.yansh.course.searchengine.Config.MongoDBConfig;
-import static xin.yansh.course.searchengine.Config.PublicConfig;
 
 public class CreateIndex {
     public static void main(String[] args) throws Exception {
@@ -17,5 +16,6 @@ public class CreateIndex {
         PageIndexer indexer = new PageIndexer();
         indexer.indexMongoDBCollection(collection);
         indexer.close();
+        client.close();
     }
 }

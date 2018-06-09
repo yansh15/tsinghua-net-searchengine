@@ -5,7 +5,9 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.DoubleDocValuesField;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.NumericDocValuesField;
 import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
@@ -65,27 +67,28 @@ public class PageIndexer {
     private void indexMongoDBDocument(Document document) throws Exception {
         String contentType = (String) document.get(MongoDBConfig.KEY_CONTENT_TYPE);
         String url = (String) document.get(MongoDBConfig.KEY_URL);
+        double pageRank = (Double) document.get(MongoDBConfig.KEY_PAGERANK);
         switch (contentType) {
             case MongoDBConfig.HTML_CONTENT_TYPE: {
                 String charset = (String) document.get(MongoDBConfig.KEY_CHARSET);
                 String html = (String) document.get(MongoDBConfig.KEY_HTML);
-                indexHtml(contentType, url, charset, html);
+                indexHtml(contentType, url, charset, html, pageRank);
                 break;
             }
             case MongoDBConfig.PDF_CONTENT_TYPE: {
                 byte[] bytes = ((Binary) document.get(MongoDBConfig.KEY_BYTES)).getData();
-                indexPDF(contentType, url, bytes);
+                indexPDF(contentType, url, bytes, pageRank);
                 break;
             }
             case MongoDBConfig.WORD_CONTENT_TYPE: {
                 byte[] bytes = ((Binary) document.get(MongoDBConfig.KEY_BYTES)).getData();
-                indexWord(contentType, url, bytes);
+                indexWord(contentType, url, bytes, pageRank);
                 break;
             }
         }
     }
 
-    private void indexHtml(String contentType, String url, String charset, String html) {
+    private void indexHtml(String contentType, String url, String charset, String html, double pageRank) {
     	try {
 	        List<Field> fieldList = new ArrayList<>();
 	
@@ -121,6 +124,14 @@ public class PageIndexer {
 	        String content = DocumentHelper.getText(mainElements);
 	        Field contentField = new TextField(LuceneConfig.FIELD_CONTENT, content, Field.Store.YES);
 	        fieldList.add(contentField);
+	        
+	        //Field pageRankField = new NumericDocValuesField(LuceneConfig.FIELD_PAGERANK, Math.round(pageRank * Long.MAX_VALUE));
+	        //pageRankField.setDoubleValue(pageRank);
+	        
+	        //Field pageRankField = new DoubleDocValuesField(LuceneConfig.FIELD_PAGERANK, pageRank);
+	        
+	        Field pageRankField = new StoredField(LuceneConfig.FIELD_PAGERANK, pageRank);
+	        fieldList.add(pageRankField);
 	
 	        indexWriter.addDocument(fieldList);
     	}
@@ -129,7 +140,7 @@ public class PageIndexer {
     	}
     }
 
-    private void indexPDF(String contentType, String url, byte[] bytes) {
+    private void indexPDF(String contentType, String url, byte[] bytes, double pageRank) {
     	try {
 	        List<Field> fieldList = new ArrayList<>();
 	
@@ -147,6 +158,9 @@ public class PageIndexer {
 	        Field contentField = new TextField(LuceneConfig.FIELD_CONTENT, content, Field.Store.YES);
 	        fieldList.add(contentField);
 	
+	        Field pageRankField = new StoredField(LuceneConfig.FIELD_PAGERANK, pageRank);
+	        fieldList.add(pageRankField);
+	        
 	        indexWriter.addDocument(fieldList);
     	}
     	catch (Exception e) {
@@ -154,7 +168,7 @@ public class PageIndexer {
 		}
     }
 
-    private void indexWord(String contentType, String url, byte[] bytes) {
+    private void indexWord(String contentType, String url, byte[] bytes, double pageRank) {
     	try {
 	        List<Field> fieldList = new ArrayList<>();
 	
@@ -188,7 +202,11 @@ public class PageIndexer {
 	            }
 	        }
 	        Field contentField = new TextField(LuceneConfig.FIELD_CONTENT, content, Field.Store.YES);
-	
+	        fieldList.add(contentField);
+	        
+	        Field pageRankField = new StoredField(LuceneConfig.FIELD_PAGERANK, pageRank);
+	        fieldList.add(pageRankField);
+	        
 	        indexWriter.addDocument(fieldList);
     	}
     	catch (Exception e) {

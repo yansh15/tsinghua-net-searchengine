@@ -6,13 +6,10 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
-import sun.security.krb5.internal.PAData;
 import xin.yansh.course.searchengine.Config;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static xin.yansh.course.searchengine.Config.MongoDBConfig;
 
@@ -103,5 +100,7 @@ public class CalcPageRank {
 
         for (PageInfo info : pages.values())
             collection.updateOne(Filters.eq(MongoDBConfig.KEY_URL, info.url), new Document("$set", new Document(MongoDBConfig.KEY_PAGERANK, info.pageRank)));
+        
+        client.close();
     }
 }
