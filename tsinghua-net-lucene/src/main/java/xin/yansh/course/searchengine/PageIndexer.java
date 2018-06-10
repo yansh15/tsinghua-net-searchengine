@@ -20,6 +20,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.poi.POIXMLTextExtractor;
 import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.model.FieldsDocumentPart;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.bson.Document;
@@ -92,7 +93,7 @@ public class PageIndexer {
     	try {
 	        List<Field> fieldList = new ArrayList<>();
 	
-	        Field contentTypeField = new StoredField(LuceneConfig.FIELD_CONTENT_TYPE, contentType);
+	        Field contentTypeField = new StringField(LuceneConfig.FIELD_CONTENT_TYPE, contentType, Field.Store.YES);
 	        fieldList.add(contentTypeField);
 	
 	        Field urlField = new StringField(LuceneConfig.FIELD_URL, url, Field.Store.YES);
@@ -144,7 +145,7 @@ public class PageIndexer {
     	try {
 	        List<Field> fieldList = new ArrayList<>();
 	
-	        Field contentTypeField = new StoredField(LuceneConfig.FIELD_CONTENT_TYPE, contentType);
+	        Field contentTypeField = new StringField(LuceneConfig.FIELD_CONTENT_TYPE, contentType, Field.Store.YES);
 	        fieldList.add(contentTypeField);
 	
 	        Field urlField = new StringField(LuceneConfig.FIELD_URL, url, Field.Store.YES);
@@ -172,7 +173,7 @@ public class PageIndexer {
     	try {
 	        List<Field> fieldList = new ArrayList<>();
 	
-	        Field contentTypeField = new StoredField(LuceneConfig.FIELD_CONTENT_TYPE, contentType);
+	        Field contentTypeField = new StringField(LuceneConfig.FIELD_CONTENT_TYPE, contentType, Field.Store.YES);
 	        fieldList.add(contentTypeField);
 	
 	        Field urlField = new StringField(LuceneConfig.FIELD_URL, url, Field.Store.YES);
