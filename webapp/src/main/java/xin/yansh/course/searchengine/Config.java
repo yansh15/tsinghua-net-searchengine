@@ -12,7 +12,7 @@ class Config {
     	/*
     	 * Score = BM25_Score * (Coefficient * PageRank_Score + Bias) (if With_PageRank else BM25_Score);
     	 */
-    	static final Boolean WITH_PAGERANK = true;
+    	static final boolean WITH_PAGERANK = true;
     	static final float COEF_PAGERANK = 1f;
     	static final float BIAS_PAGERANK = 1f;
     }
@@ -59,11 +59,11 @@ class Config {
     }
     
     static class SearchFieldWeightConfig {
-    	static final float TITLE_WEIGHT = 100f;
-    	static final float CONTENT_WEIGHT = 1f;
-    	static final float H_WEIGHT = 0.1f;
-    	static final float URL_WEIGHT = 10f;
-    	static final float KEYWORD_WEIGHT = 10f;
+    	static final float TITLE_WEIGHT = 0.4f;
+    	static final float CONTENT_WEIGHT = 0.04f;
+    	static final float H_WEIGHT = 0.16f;
+    	static final float URL_WEIGHT = 1.0f;
+    	static final float KEYWORD_WEIGHT = 0.4f;
     }
     
     static class PageConfig {
