@@ -9,6 +9,7 @@
     <modules>
         <module>tsinghua-net-spider</module>
     <module>tsinghua-net-lucene</module>
+    <module>webapp</module>
   </modules>
 
     <name>Tsinghua Net Search Engine</name>

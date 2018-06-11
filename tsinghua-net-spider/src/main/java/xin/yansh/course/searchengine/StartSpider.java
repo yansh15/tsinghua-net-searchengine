@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class App {
+public class StartSpider {
     public static void main(String[] args) throws Exception {
         InputStream configInputStream = new FileInputStream(new File(Config.CONFIG_FILE));
         byte[] buffer = new byte[configInputStream.available()];
@@ -41,7 +41,7 @@ public class App {
         MongoCollection<Document> collection = database.getCollection(Config.getCollectionName());
         collection.drop();
 
-        QueueScheduler scheduler = (QueueScheduler) new QueueScheduler().setDuplicateRemover(new BloomFilterDuplicateRemover(10000000, 0.001));
+        QueueScheduler scheduler = (QueueScheduler) new QueueScheduler();
 
         Spider.create(new MyPageProcessor(domains, scheduler))
                 .setScheduler(scheduler)

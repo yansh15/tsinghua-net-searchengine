@@ -6,7 +6,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
-import xin.yansh.course.searchengine.Config;
+import org.bson.types.ObjectId;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,14 +15,12 @@ import static xin.yansh.course.searchengine.Config.MongoDBConfig;
 
 class PageInfo implements Comparable<PageInfo> {
     String url;
-    int inDegree;
     int outDegree;
     double pageRank;
     double nextPageRank;
 
     PageInfo(String u) {
         url = u;
-        inDegree = 0;
         outDegree = 0;
         pageRank = 0.0;
         nextPageRank = 0.0;
@@ -100,7 +98,7 @@ public class CalcPageRank {
 
         for (PageInfo info : pages.values())
             collection.updateOne(Filters.eq(MongoDBConfig.KEY_URL, info.url), new Document("$set", new Document(MongoDBConfig.KEY_PAGERANK, info.pageRank)));
-        
+
         client.close();
     }
 }
