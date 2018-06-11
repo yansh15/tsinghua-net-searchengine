@@ -89,7 +89,7 @@ public class CreateIndex {
         try {
             List<Field> fieldList = new ArrayList<>();
 
-            Field contentTypeField = new StoredField(Config.LuceneConfig.FIELD_CONTENT_TYPE, contentType);
+            Field contentTypeField = new StringField(Config.LuceneConfig.FIELD_CONTENT_TYPE, contentType, Field.Store.YES);
             fieldList.add(contentTypeField);
 
             Field urlField = new StringField(Config.LuceneConfig.FIELD_URL, url, Field.Store.YES);
@@ -141,7 +141,7 @@ public class CreateIndex {
         try {
             List<Field> fieldList = new ArrayList<>();
 
-            Field contentTypeField = new StoredField(Config.LuceneConfig.FIELD_CONTENT_TYPE, contentType);
+            Field contentTypeField = new StringField(Config.LuceneConfig.FIELD_CONTENT_TYPE, contentType, Field.Store.YES);
             fieldList.add(contentTypeField);
 
             Field urlField = new StringField(Config.LuceneConfig.FIELD_URL, url, Field.Store.YES);
@@ -177,7 +177,7 @@ public class CreateIndex {
         try {
             List<Field> fieldList = new ArrayList<>();
 
-            Field contentTypeField = new StoredField(Config.LuceneConfig.FIELD_CONTENT_TYPE, contentType);
+            Field contentTypeField = new StringField(Config.LuceneConfig.FIELD_CONTENT_TYPE, contentType, Field.Store.YES);
             fieldList.add(contentTypeField);
 
             Field urlField = new StringField(Config.LuceneConfig.FIELD_URL, url, Field.Store.YES);

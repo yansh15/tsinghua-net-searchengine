@@ -2,6 +2,7 @@ package xin.yansh.course.searchengine;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.hankcs.hanlp.HanLP;
+import com.hankcs.hanlp.seg.Segment;
+import com.hankcs.hanlp.seg.common.Term;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
@@ -38,6 +42,7 @@ public class SearchServer extends HttpServlet {
         if (query == null)
             return;
         try {
+            List<Term> terms = HanLP.segment(query);
             int page = Integer.parseInt(pageString);
             boolean html = Boolean.parseBoolean(htmlString);
             boolean pdf = Boolean.parseBoolean(pdfString);
@@ -47,16 +52,24 @@ public class SearchServer extends HttpServlet {
             out = response.getWriter();
             JSONObject object = new JSONObject();
             object.put("totalHits", result.totalHits);
-            JSONArray array = new JSONArray();
+            JSONArray documents = new JSONArray();
             for (ScoreDoc doc : result.scoreDocs) {
                 JSONObject document = new JSONObject();
                 document.put("url", searcher.getUrl(doc));
                 document.put("title", searcher.getTitle(doc));
                 document.put("contentType", searcher.getContentType(doc));
-                document.put("content", searcher.getContent(doc));
-                array.add(document);
+                String content = searcher.getContent(doc).length() > 2000 ? searcher.getContent(doc).substring(0, 2000) : searcher.getContent(doc);
+                StringBuilder builder = new StringBuilder();
+                for (String s : HanLP.extractSummary(content, 5))
+                    builder.append(s.trim()).append('。');
+                document.put("content", builder.toString());
+                documents.add(document);
             }
-            object.put("documents", array);
+            object.put("documents", documents);
+            JSONArray ts = new JSONArray();
+            for (Term term : terms)
+                ts.add(term.toString());
+            object.put("terms", ts);
             out.append(object.toJSONString());
         } catch (Exception e) {
             e.printStackTrace();
