@@ -1,6 +1,6 @@
 {
-  "is-small": true,
-  "threads": 7,
+  "is-small": false,
+  "threads": 128,
   "sleep-time": 10,
   "small-seed": [
     "http://www.artmuseum.tsinghua.edu.cn"

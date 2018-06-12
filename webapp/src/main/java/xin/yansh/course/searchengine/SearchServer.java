@@ -62,7 +62,7 @@ public class SearchServer extends HttpServlet {
                 StringBuilder builder = new StringBuilder();
                 for (String s : HanLP.extractSummary(content, 5))
                     builder.append(s.trim()).append('。');
-                document.put("content", builder.toString());
+                document.put("content", builder.length() > 130 ? builder.substring(0, 130) : builder.toString());
                 documents.add(document);
             }
             object.put("documents", documents);

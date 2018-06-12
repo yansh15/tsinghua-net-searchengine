@@ -5,7 +5,7 @@ import java.util.List;
 
 class Config {
     static class PublicConfig {
-        static final Boolean IS_SMALL = true;
+        static final Boolean IS_SMALL = false;
     }
     
     static class ScoreConfig {
@@ -13,7 +13,7 @@ class Config {
     	 * Score = BM25_Score * (Coefficient * PageRank_Score + Bias) (if With_PageRank else BM25_Score);
     	 */
     	static final boolean WITH_PAGERANK = true;
-    	static final float COEF_PAGERANK = 1f;
+    	static final float COEF_PAGERANK = 40f;
     	static final float BIAS_PAGERANK = 1f;
     }
     

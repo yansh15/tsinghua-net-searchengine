@@ -5,7 +5,7 @@ import java.util.List;
 
 class Config {
     static class PublicConfig {
-        static final Boolean IS_SMALL = true;
+        static final Boolean IS_SMALL = false;
     }
     
     static class ScoreConfig {
